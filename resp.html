@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- Load c3.css -->
+    <link href="c3-master/c3.css" rel="stylesheet" type="text/css">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="d3-master/d3.min.js" charset="utf-8"></script>
+    <script src="c3-master/c3.min.js"></script>
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+    <style>
+        #container{
+            /*min-width: 100px;*/
+            /*width: 50%;*/
+            height: 100vh;
+            border: 1px solid #ccc;
+        }
+        #chart > svg > g:nth-child(2) > g.c3-chart > g.c3-chart-arcs > g.c3-chart-arc.c3-target.c3-target-Room-C.c3-focused > text{
+            color: red !important;
+        }
+        .c3-chart-arc text{
+            font-size: 2vmin;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        $(function(){
+
+            function delayedResize(elArr){
+                elArr.each(function() {
+                    $( this ).css('font-size', parseInt(fontSize * 16) + 'px');
+                    console.log(fontSize * 16)
+                    var style = $( this ).attr('style');
+                    $( this ).attr(style + ';font-size: ' + fontSizeStr);
+                    console.log($( this ).attr(style));
+//                             $( this ).css('fill', 'red');
+//                             $( this ).addClass('resized');
+//                        $( this ).attr('resized', 'kmg');
+                });
+            }
+
+            var chart = c3.generate({
+                bindto: '#chart',
+//                size: {height: 100, width: 100},
+                onresized: function () {
+                    var self = this;
+
+//                    console.log(csize);
+//                    console.clear();
+                    console.log(self.height);
+                    console.log(self.width);
+
+                    var min = self.height > self.width ? self.width : self.height,
+                            fontSize = min/400,
+                            fontSizeStr = fontSize + 'rem';
+
+                    console.log(fontSize);
+
+                    $('svg text').css('font-size', fontSizeStr );
+//                    $('svg text[dy]').css('font-size', fontSize);
+
+                    var el = $('.c3-chart-arc text');
+
+                    var fstr = '(function(elArr){ elArr.each(function() { $( this ).css("font-size", parseInt(' + fontSize + ' * 16) + "px");   var style = $( this ).attr("style"); style += ";font-size:" + ' + fontSizeStr + '; $( this ).attr("style", style);  console.log($( this ).attr(style)); })($(".c3-chart-arc text"))';
+
+                    console.log(fstr);
+
+
+//                    setTimeout(fstr, 50);
+
+
+
+
+//                    self.height = csize.height;
+//                    self.width = csize.width;
+                },
+                data: {
+                    columns: [
+                        ['Room A', 30],
+                        ['Room B', 120],
+                        ['Room C', 421]
+                    ],
+                    type : 'donut',
+                    //onclick: function (d, i) { console.log("onclick", d, i); },
+                    //onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                    //onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                },
+                donut: {
+                    title: "User activity in rooms"
+                }
+            });
+
+            function resizeHandler(){
+                var el = $('#container');
+                var w = el.width(), h = el.height(), s = ( h > w ) ? w : h;
+
+                chart.resize({height: s, width: s });
+            }
+            $(window).resize(function () {
+                resizeHandler();
+            });
+        });
+    </script>
+
+</body>
+</html>

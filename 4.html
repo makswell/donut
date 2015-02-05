@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer",
+                    {
+                        title:{
+                            text: "User activity in rooms"
+                        },
+                        animationEnabled: true,
+                        theme: "theme2",
+                        data: [
+                            {
+                                type: "doughnut",
+                                indexLabelFontFamily: "Garamond",
+                                indexLabelFontSize: 20,
+                                startAngle:0,
+                                indexLabelFontColor: "dimgrey",
+                                indexLabelLineColor: "darkgrey",
+                                toolTipContent: "{y} posts",
+
+                                dataPoints: [
+                                    {  y: 421, label: "Room A {y} posts" },
+                                    {  y: 28, label: "Room B {y} posts" },
+                                    {  y: 12, label: "Kindle {y} posts" }
+                                ]
+                            }
+                        ]
+                    });
+
+            chart.render();
+
+            prettyPrint();
+        }
+    </script>
+    <script type="text/javascript" src="canvasjs-1.6.0/canvasjs.min.js"></script>
+</head>
+<body>
+<h3> Canvas.JS (Canvas obviously)</h3>
+<div id="chartContainer" style="height: 300px; width: 100%;">
+</div>
+
+<pre id="code" class="prettyprint linenums">
+
+            var chart = new CanvasJS.Chart("chartContainer",
+                    {
+                        title:{
+                            text: "Uwer activity in rooms"
+                        },
+                        animationEnabled: true,
+                        theme: "theme2",
+                        data: [
+                            {
+                                type: "doughnut",
+                                indexLabelFontFamily: "Garamond",
+                                indexLabelFontSize: 20,
+                                startAngle:0,
+                                indexLabelFontColor: "dimgrey",
+                                indexLabelLineColor: "darkgrey",
+                                toolTipContent: "{y} posts",
+
+                                dataPoints: [
+                                    {  y: 421, label: "Room A {y} posts" },
+                                    {  y: 28, label: "Room B {y} posts" },
+                                    {  y: 12, label: "Kindle {y} posts" }
+                                ]
+                            }
+                        ]
+                    });
+
+            chart.render();
+</pre>
+
+</body>
+</html>

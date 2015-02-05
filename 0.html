@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+
+    <style>
+        #Bublik1{
+            display: block;
+            height: 50vh;
+        }
+    </style>
+</head>
+<body>
+    <script src="chartjs/Chart.js-master/Chart.js"></script>
+
+    <h3>Chart.js (Canvas)</h3>
+    <canvas id="Bublik1" style="min-width:200px; min-height:200px;"></canvas>
+
+    <pre id="code" class="prettyprint linenums">
+        var ctx = document.getElementById("Bublik1").getContext("2d");
+
+            var data = [
+                {
+                    value: 300,
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Room \"Talks\""
+                },
+                {
+                    value: 50,
+                    color: "#46BFBD",
+                    highlight: "#5AD3D1",
+                    label: "Room \"Green Food\""
+                },
+                {
+                    value: 100,
+                    color: "#FDB45C",
+                    highlight: "#FFC870",
+                    label: "Room \"Modern Tools\""
+                }
+            ];
+
+            var options = {
+                animateScale: true
+            };
+
+            var chartEx1 = new Chart(ctx).Doughnut(data,options)(data);
+    </pre>
+
+
+    <script>
+
+
+        $(function(){
+
+            // Chart.JS
+            var ctx = document.getElementById("Bublik1").getContext("2d");
+
+            var data = [
+                {
+                    value: 300,
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Room \"Talks\""
+                },
+                {
+                    value: 50,
+                    color: "#46BFBD",
+                    highlight: "#5AD3D1",
+                    label: "Room \"Green Food\""
+                },
+                {
+                    value: 100,
+                    color: "#FDB45C",
+                    highlight: "#FFC870",
+                    label: "Room \"Modern Tools\""
+                }
+            ];
+
+            var options = {
+                animateScale: true
+            };
+            prettyPrint();
+            var chartEx1 = new Chart(ctx).Doughnut(data,options)(data);
+        });
+
+
+    </script>
+
+
+</body>
+</html>

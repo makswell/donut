@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="zingchart_trial/zingchart.min.js"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+
+</head>
+<body>
+    <h3>Zingchart (SVG/img)</h3>
+
+    <div id="chart"></div>
+    <div id="chart2"></div>
+
+    <pre id="code" class="prettyprint linenums">
+            var series = [
+                {
+                    "text":"Apples",
+                    "values":[5]
+                },
+                {
+                    "text":"Oranges",
+                    "values":[8]
+                },
+                {
+                    "text":"Bananas",
+                    "values":[22]
+                },
+                {
+                    "text":"Grapes",
+                    "values":[16]
+                },
+                {
+                    "text":"Cherries",
+                    "values":[12]
+                }
+            ];
+
+            zingchart.render({
+                id: "chart",
+                data: {
+                    "type":"pie",
+                    "plot":{
+                        "slice":45
+                    },
+                    "plotarea":{
+                        "margin-top":"35px"
+                    },
+                    "series":series
+                }
+            });
+
+            zingchart.render({
+                id: "chart2",
+                data: {
+                    "type":"pie3d",
+                    "plot":{
+                        "slice":25
+                    },
+                    "plotarea":{
+                        "margin-top":"35px"
+                    },
+                    "series": series
+                }
+            });
+    </pre>
+
+    <script>
+        window.onload = function() {
+
+            var series = [
+                {
+                    "text":"Apples",
+                    "values":[5]
+                },
+                {
+                    "text":"Oranges",
+                    "values":[8]
+                },
+                {
+                    "text":"Bananas",
+                    "values":[22]
+                },
+                {
+                    "text":"Grapes",
+                    "values":[16]
+                },
+                {
+                    "text":"Cherries",
+                    "values":[12]
+                }
+            ];
+
+            zingchart.render({
+                id: "chart",
+                data: {
+                    "type":"pie",
+                    "plot":{
+                        "slice":45
+                    },
+                    "plotarea":{
+                        "margin-top":"35px"
+                    },
+                    "series":series
+                }
+            });
+
+            zingchart.render({
+                id: "chart2",
+                data: {
+                    "type":"pie3d",
+                    "plot":{
+                        "slice":25
+                    },
+                    "plotarea":{
+                        "margin-top":"35px"
+                    },
+                    "series": series
+                }
+            });
+
+            prettyPrint();
+        };
+    </script>
+
+</body>
+</html>

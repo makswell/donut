@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="bootstrap/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+    <!-- c3 -->
+    <link href="c3-master/c3.css" rel="stylesheet" type="text/css">
+    <script src="d3-master/d3.min.js" charset="utf-8"></script>
+    <script src="c3-master/c3.min.js"></script>
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+    <!-- Morris stuff -->
+    <script src="morris.js-master/morris.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+
+
+    <!-- highcharts -->
+    <script src="highcharts/js/highcharts.js"></script>
+    <script src="highcharts/js/highcharts-3d.js"></script>
+    <!--<script src="highcharts/js/modules/exporting.js"></script>-->
+
+    <!-- Flot -->
+    <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="flot/jquery.flot.pie.js"></script>
+    <script language="javascript" type="text/javascript" src="flot/jquery.flot.resize.js"></script>
+
+
+
+    <style>
+        .chartBox{
+            min-height: 33vh;
+            border: 1px solid #ccc;
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-6 chartBox" id="chartC3"></div>
+        <div class="col-xs-6 chartBox" id="chartMorris"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 chartBox" id="chartHigh"></div>
+        <div class="col-xs-4 chartBox" id="chartMorris2"></div>
+        <div class="col-xs-4 chartBox" id="chartFlot"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6 chartBox" id="chartFlot2"></div>
+        <div class="col-xs-6 chartBox"></div>
+    </div>
+
+    <script>
+        $(function(){
+
+            var mockData = {
+                                "rooms": ["Alpha", "Bravo", "Charlie", "Tango"],
+                                "users": [100, 453, 900, 108],
+                                "posts": [1000, 8002, 3020, 800]
+            };
+
+            function c3jsonConverter(obj, field){
+                var res = [];
+                field = field || 'users';
+
+                for(var i = 0; i < obj.rooms.length; i++ ){
+                    res.push([obj.rooms[i], obj[field][i]]);
+                }
+
+                return res;
+            }
+
+            function morrisJsonConverter(obj, field){
+                var res = [];
+                field = field || 'users';
+
+                for(var i = 0; i < obj.rooms.length; i++ ){
+                    res.push({"label":obj.rooms[i], "value": obj[field][i]});
+                }
+
+                return res;
+            }
+
+            function highchartJsonConverter(obj, colors, field){
+                var res = [];
+                field = field || 'users';
+
+                for(var i = 0; i < obj.rooms.length; i++ ){
+                    res.push({"name":obj.rooms[i],  "color":colors[i], "y": obj[field][i]});
+                }
+                return res;
+            }
+
+            function flotJsonConverter(obj, field){
+                var res = [];
+                field = field || 'users';
+
+                for(var i = 0; i < obj.rooms.length; i++ ){
+                    res.push({"label":obj.rooms[i],  "data": obj[field][i]});
+                }
+                return res;
+            }
+
+//            C3
+            function c3TitleRemover(){
+            }
+
+            var chart = c3.generate({
+                bindto: '#chartC3',
+                donut: {
+                    title: "User activity in rooms",
+                    label: {show: false}
+                },
+                data: {
+                    self: this,
+                    columns: c3jsonConverter(mockData),
+                    type : 'donut',
+
+                    onclick: function (d, i, s) {
+//                        console.log("onclick", d, i, this);
+                        console.log(chart);
+//                        var self = this;
+//                        console.log(self);
+//                        console.log(this);
+                    },
+                    onmouseover: function (d, i) {
+//                        console.log("onmouseover", d, i, this);
+//                        console.log(this);
+                    },
+                    onmouseout: function (d, i) {
+                        //console.log("onmouseout", d, i);
+                    },
+                    onresize: function(d, i){
+                        console.log('boo');
+                    }
+                },
+                onresized: function () {
+                    var self = this;
+                    var min = self.height > self.width ? self.width : self.height,
+                            fontSize = min/200,
+                            fontSizeStr = fontSize + 'rem';
+
+                    console.log(fontSize);
+
+                    $('#chartC3 svg text').css('font-size', fontSizeStr );
+//                    var el = $('.c3-chart-arc text');
+//                    var fstr = '(function(elArr){ elArr.each(function() { $( this ).css("font-size", parseInt(' + fontSize + ' * 16) + "px");   var style = $( this ).attr("style"); style += ";font-size:" + ' + fontSizeStr + '; $( this ).attr("style", style);  console.log($( this ).attr(style)); })($(".c3-chart-arc text"))';
+//                    console.log(fstr);
+//                    setTimeout(fstr, 50);
+
+                }
+            });
+
+
+//            Morris
+            Morris.Donut({
+                element: 'chartMorris',
+                data: morrisJsonConverter(mockData),
+                resize: true,
+                formatter: function (x) { return x + "%"}
+            });
+
+
+//          Highcharts
+            var colors = Highcharts.getOptions().colors,
+                    categories = mockData.rooms,
+                    data = highchartJsonConverter(mockData, colors),
+                    browserData = [],
+                    i,
+                    j,
+                    dataLen = data.length,
+                    brightness;
+
+
+            // Build the data arrays
+//            for (i = 0; i < dataLen; i += 1) {
+//
+//                // add browser data
+//                browserData.push({
+//                    name: categories[i],
+//                    y: data[i].y,
+//                    color: data[i].color
+//                });
+//            }
+
+            $('#chartHigh').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: ''
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total percent of posts'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        shadow: true,
+                        center: ['50%', '50%'],
+                        innerSize: 100
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                series: [{
+                    name: 'Posts',
+                    data: data, //browserData,
+                    size: '100%',
+                    dataLabels: {
+                        formatter: function () {
+                            return '';//this.y > 5 ? this.point.name : null;
+                        },
+                        color: '#fff',
+                        distance: -30
+                    }
+                }]
+            });
+
+
+            // Flot
+            $.plot('#chartFlot', flotJsonConverter(mockData), {
+                series: {
+                    pie: {
+                        innerRadius: 0.5,
+                        show: true
+                    }
+                }
+            });
+
+            $.plot('#chartFlot2', flotJsonConverter(mockData), {
+                series: {
+                    pie: {
+                        innerRadius: 0.5,
+                        show: true
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
